@@ -135,9 +135,11 @@ CREATE TABLE IF NOT EXISTS Diagnosis (
   FOREIGN KEY (DoctorID)  REFERENCES Doctors(DoctorId)   ON DELETE SET NULL
 );
 
--- bcrypt hash below is for the literal string "password" (jbcrypt 0.4)
+-- bcrypt hashes below (jbcrypt 0.4):
+--   admin     -> "admin123"
+--   all other -> "password"
 INSERT IGNORE INTO Users VALUES
-(1,'admin','$2a$10$UMn3n6ENh9NVKqp7JaWqq.4FqCI9GRNStLaTY/c0JjC5N/LnCVKzy','Admin',NULL),
+(1,'admin','$2a$10$6QTmJJLNl6qm1HWg1Hz6E.rfnQ0Jg6IFAhiMQBNUyj7Qq3gNYRPlu','Admin',NULL),
 (2,'teacher1','$2a$10$UMn3n6ENh9NVKqp7JaWqq.4FqCI9GRNStLaTY/c0JjC5N/LnCVKzy','Teacher',NULL),
 (3,'teacher2','$2a$10$UMn3n6ENh9NVKqp7JaWqq.4FqCI9GRNStLaTY/c0JjC5N/LnCVKzy','Teacher',NULL),
 (4,'student1','$2a$10$UMn3n6ENh9NVKqp7JaWqq.4FqCI9GRNStLaTY/c0JjC5N/LnCVKzy','Student',NULL),
