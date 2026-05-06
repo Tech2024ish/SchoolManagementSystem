@@ -22,9 +22,33 @@ public final class JpaUtil {
 
     private static EntityManagerFactory buildFactory() {
         Map<String, String> overrides = new HashMap<>();
-        putIfPresent(overrides, "jakarta.persistence.jdbc.url",      env("DB_URL"));
-        putIfPresent(overrides, "jakarta.persistence.jdbc.user",     env("DB_USER"));
-        putIfPresent(overrides, "jakarta.persistence.jdbc.password", env("DB_PASSWORD"));
+        String url  = env("DB_URL");
+        String user = env("DB_USER");
+        String pass = env("DB_PASSWORD");
+        putIfPresent(overrides, "jakarta.persistence.jdbc.url",      url);
+        putIfPresent(overrides, "jakarta.persistence.jdbc.user",     user);
+        putIfPresent(overrides, "jakarta.persistence.jdbc.password", pass);
+
+        if (url != null) {
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                try (java.sql.Connection ignored = java.sql.DriverManager.getConnection(url, user, pass)) {
+                    System.err.println("######## RAW JDBC TEST OK ########");
+                }
+            } catch (Throwable rawErr) {
+                System.err.println("######## RAW JDBC TEST FAILED - FULL CAUSE CHAIN ########");
+                Throwable cc = rawErr;
+                int dd = 0;
+                while (cc != null && dd < 20) {
+                    System.err.println("  RAW[" + dd + "] " + cc.getClass().getName() + " :: " + cc.getMessage());
+                    cc = cc.getCause();
+                    dd++;
+                }
+                rawErr.printStackTrace();
+                System.err.println("######## END RAW JDBC TEST ########");
+            }
+        }
+
         try {
             return Persistence.createEntityManagerFactory("SMSPU", overrides);
         } catch (Throwable t) {
