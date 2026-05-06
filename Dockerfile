@@ -10,7 +10,7 @@ RUN mvn -B clean package -DskipTests
 FROM tomcat:10.1-jdk21-temurin
 RUN rm -rf /usr/local/tomcat/webapps/ROOT
 COPY --from=build /build/target/SchoolManagementSystem.war /usr/local/tomcat/webapps/ROOT.war
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Lock the shutdown listener to localhost so platform health checks can't hit it.
+RUN sed -i 's|<Server port="8005"|<Server port="8005" address="127.0.0.1"|' /usr/local/tomcat/conf/server.xml
 EXPOSE 8080
-ENTRYPOINT ["/entrypoint.sh"]
+CMD ["catalina.sh", "run"]
