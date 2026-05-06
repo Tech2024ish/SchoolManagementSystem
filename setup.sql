@@ -165,23 +165,23 @@ INSERT IGNORE INTO Parents VALUES
 (2,'Susan','Davis','susan@email.com','0780000021','Kigali',2);
 
 INSERT IGNORE INTO Announcement VALUES
-(1,'Welcome to the new semester!','2025-01-15','All'),
-(2,'Math exam next Friday','2025-01-20','Students'),
-(3,'Staff meeting on Monday','2025-01-18','Teachers');
+(1,'Welcome to the new semester!','2026-01-15','All'),
+(2,'Math exam next Friday','2026-01-20','Students'),
+(3,'Staff meeting on Monday','2026-01-18','Teachers');
 
 INSERT IGNORE INTO Marks VALUES
 (1,1,1,85.00,'A'),(2,1,2,72.00,'B'),
 (3,2,1,90.00,'A'),(4,3,3,65.00,'C');
 
 INSERT IGNORE INTO StudentBehavior VALUES
-(1,1,'Good','Participates actively in class','2025-01-15'),
-(2,2,'Active','Always engaged and helpful','2025-01-15'),
-(3,3,'Shy','Needs encouragement to participate','2025-01-15');
+(1,1,'Good','Participates actively in class','2026-01-15'),
+(2,2,'Active','Always engaged and helpful','2026-01-15'),
+(3,3,'Shy','Needs encouragement to participate','2026-01-15');
 
 INSERT IGNORE INTO StudentTracking VALUES
-(1,1,'Wellbeing','On track','In school','2025-01-15'),
-(2,2,'Wellbeing','On track','In school','2025-01-15'),
-(3,3,'Sick','Not good','At home','2025-01-15');
+(1,1,'Wellbeing','On track','In school','2026-01-15'),
+(2,2,'Wellbeing','On track','In school','2026-01-15'),
+(3,3,'Sick','Not good','At home','2026-01-15');
 
 INSERT IGNORE INTO Nurses VALUES
 (1,'Anna','White','0780000030','anna.white@sms.com','Kigali','SMS Health Center'),
@@ -192,5 +192,5 @@ INSERT IGNORE INTO Doctors VALUES
 (2,'Emily','Stone','0780000041','emily.stone@hospital.com','Kigali','CHUK');
 
 INSERT IGNORE INTO Diagnosis VALUES
-(1,3,1,1,'Completed','Mild flu, prescribed rest and fluids','2025-01-15'),
-(2,2,2,2,'Pending','Initial consultation pending','2025-01-20');
+(1,3,1,1,'Completed','Mild flu, prescribed rest and fluids','2026-01-15'),
+(2,2,2,2,'Pending','Initial consultation pending','2026-01-20');

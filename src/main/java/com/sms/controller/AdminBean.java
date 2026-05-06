@@ -71,16 +71,21 @@ public class AdminBean implements Serializable {
                 selectedTeacher.setCourse(c);
             }
             if (selectedTeacher.getTeacherId() == 0) {
-                teacherService.save(selectedTeacher);
-                if (newUsername != null && !newUsername.isEmpty()) {
-                    User u = new User();
-                    u.setUsername(newUsername);
-                    u.setPassword(authService.hashPassword(
-                        newPassword != null && !newPassword.isEmpty() ? newPassword : "admin123"));
-                    u.setUserType(User.UserType.Teacher);
-                    userDAO.save(u);
+                String uname = newUsername == null ? "" : newUsername.trim();
+                String pwd   = newPassword == null ? "" : newPassword.trim();
+                if (uname.isEmpty() || pwd.isEmpty()) {
+                    addMessage("Username and password are required for a new teacher.",
+                        FacesMessage.SEVERITY_ERROR);
+                    return;
                 }
-                addMessage("Teacher added successfully.", FacesMessage.SEVERITY_INFO);
+                teacherService.save(selectedTeacher);
+                User u = new User();
+                u.setUsername(uname);
+                u.setPassword(authService.hashPassword(pwd));
+                u.setUserType(User.UserType.Teacher);
+                userDAO.save(u);
+                addMessage("Teacher added. Login -> username: " + uname + ", password: " + pwd,
+                    FacesMessage.SEVERITY_INFO);
             } else {
                 teacherService.update(selectedTeacher);
                 addMessage("Teacher updated successfully.", FacesMessage.SEVERITY_INFO);

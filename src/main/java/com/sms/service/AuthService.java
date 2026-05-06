@@ -18,9 +18,10 @@ public class AuthService {
     private UserDAO userDAO;
 
     public boolean login(String username, String password) {
-        User user = userDAO.findByUsername(username);
+        if (username == null || password == null) return false;
+        User user = userDAO.findByUsername(username.trim());
         if (user == null) return false;
-        if (!BCrypt.checkpw(password, user.getPassword())) return false;
+        if (!BCrypt.checkpw(password.trim(), user.getPassword())) return false;
         HttpSession session = getSession(true);
         session.setAttribute("loggedUser", user);
         return true;
