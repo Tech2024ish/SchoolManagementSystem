@@ -30,8 +30,8 @@
                 <div class="form-grid">
                     <div class="form-field" style="grid-column:1/-1">
                         <label>Upload Profile Image</label>
-                        <p:fileUpload value="#{profileBean.uploadedFile}" mode="simple"
-                                      accept="image/*" skinSimple="true" style="width:100%"/>
+                        <h:inputFile value="#{profileBean.uploadedFile}"
+                                     accept="image/*" style="width:100%"/>
                     </div>
                     <div class="form-field" style="grid-column:1/-1;text-align:right">
                         <p:commandButton value="Upload Image" icon="pi pi-upload" styleClass="btn-secondary"

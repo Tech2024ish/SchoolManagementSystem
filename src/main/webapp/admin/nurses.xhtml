@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-user-nurse"></i> Manage Nurses</h2>
+            <p:commandButton value="Add Nurse" icon="pi pi-plus" styleClass="btn-primary"
+                             onclick="PF('nurseDlg').show()"
+                             action="#{medicalBean.prepareNewNurse}"
+                             update="nurseForm" process="@this"/>
+        </div>
+
+        <p:growl id="msgs" life="4000"/>
+
+        <div class="content-card">
+            <p:dataTable id="nurseTable" value="#{medicalBean.nurses}" var="n"
+                         emptyMessage="No nurses found." styleClass="sms-table"
+                         paginator="true" rows="10">
+                <p:column headerText="Full Name">
+                    <h:outputText value="#{n.firstName} #{n.lastName}"/>
+                </p:column>
+                <p:column headerText="Health Center">
+                    <h:outputText value="#{n.healthCenter}"/>
+                </p:column>
+                <p:column headerText="Email">
+                    <h:outputText value="#{n.email}"/>
+                </p:column>
+                <p:column headerText="Telephone">
+                    <h:outputText value="#{n.telephone}"/>
+                </p:column>
+                <p:column headerText="Address">
+                    <h:outputText value="#{n.address}"/>
+                </p:column>
+                <p:column headerText="Actions" style="width:120px">
+                    <p:commandButton icon="pi pi-pencil" styleClass="btn-edit"
+                                     action="#{medicalBean.editNurse(n)}"
+                                     onclick="PF('nurseDlg').show()"
+                                     update="nurseForm" process="@this" title="Edit"/>
+                    <p:commandButton icon="pi pi-trash" styleClass="btn-danger"
+                                     action="#{medicalBean.deleteNurse(n)}"
+                                     update="nurseTable msgs" process="@this" title="Delete">
+                        <p:confirm header="Confirm Delete" message="Delete this nurse?"
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </div>
+
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes btn-danger"/>
+            <p:commandButton value="No"  type="button" styleClass="ui-confirmdialog-no"/>
+        </p:confirmDialog>
+
+        <p:dialog header="Nurse Details" widgetVar="nurseDlg" modal="true" width="600" closeOnEscape="true">
+            <h:form id="nurseForm">
+                <div class="form-grid">
+                    <div class="form-field"><label>First Name</label>
+                        <p:inputText value="#{medicalBean.selectedNurse.firstName}" required="true"/></div>
+                    <div class="form-field"><label>Last Name</label>
+                        <p:inputText value="#{medicalBean.selectedNurse.lastName}" required="true"/></div>
+                    <div class="form-field"><label>Email</label>
+                        <p:inputText value="#{medicalBean.selectedNurse.email}"/></div>
+                    <div class="form-field"><label>Telephone</label>
+                        <p:inputText value="#{medicalBean.selectedNurse.telephone}"/></div>
+                    <div class="form-field"><label>Health Center</label>
+                        <p:inputText value="#{medicalBean.selectedNurse.healthCenter}"/></div>
+                    <div class="form-field" style="grid-column:1/-1"><label>Address</label>
+                        <p:inputText value="#{medicalBean.selectedNurse.address}"/></div>
+                </div>
+                <div class="dialog-footer">
+                    <p:commandButton value="Save" icon="pi pi-check" styleClass="btn-primary"
+                                     action="#{medicalBean.saveNurse}"
+                                     update="nurseTable msgs" process="nurseForm"
+                                     oncomplete="if(!args.validationFailed) PF('nurseDlg').hide()"/>
+                    <p:commandButton value="Cancel" icon="pi pi-times"
+                                     onclick="PF('nurseDlg').hide()" type="button"/>
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+</html>

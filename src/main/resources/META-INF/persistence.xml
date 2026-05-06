@@ -17,6 +17,9 @@
         <class>com.sms.model.StudentTracking</class>
         <class>com.sms.model.Appointment</class>
         <class>com.sms.model.Report</class>
+        <class>com.sms.model.Nurse</class>
+        <class>com.sms.model.Doctor</class>
+        <class>com.sms.model.Diagnosis</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/SMS?createDatabaseIfNotExist=true&amp;useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"/>

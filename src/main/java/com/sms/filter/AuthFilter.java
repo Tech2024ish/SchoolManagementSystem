@@ -23,9 +23,10 @@ public class AuthFilter implements Filter {
 
         if (uri.contains("index.xhtml") || uri.contains("index.faces")
                 || uri.contains("jakarta.faces.resource")
+                || uri.startsWith(ctx + "/images/")
                 || uri.endsWith(".css") || uri.endsWith(".js")
-                || uri.endsWith(".png") || uri.endsWith(".jpg")
-                || uri.endsWith(".gif") || uri.endsWith(".ico")
+                || uri.endsWith(".png") || uri.endsWith(".jpg") || uri.endsWith(".jpeg")
+                || uri.endsWith(".gif") || uri.endsWith(".ico") || uri.endsWith(".webp")
                 || uri.equals(ctx + "/") || uri.equals(ctx)) {
             chain.doFilter(request, response);
             return;

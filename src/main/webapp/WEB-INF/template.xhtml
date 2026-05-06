@@ -7,6 +7,7 @@
 <h:head>
     <title>School Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
     <h:outputStylesheet library="css" name="style.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </h:head>
@@ -64,6 +65,18 @@
                             </h:outputLink>
                             <h:outputLink value="#{request.contextPath}/admin/reports.xhtml" styleClass="nav-item">
                                 <i class="fas fa-file-alt"></i> Reports
+                            </h:outputLink>
+                        </div>
+                        <div class="nav-section">
+                            <div class="nav-section-title">HEALTH</div>
+                            <h:outputLink value="#{request.contextPath}/admin/nurses.xhtml" styleClass="nav-item">
+                                <i class="fas fa-user-nurse"></i> Nurses
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/admin/doctors.xhtml" styleClass="nav-item">
+                                <i class="fas fa-user-md"></i> Doctors
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/admin/diagnosis.xhtml" styleClass="nav-item">
+                                <i class="fas fa-stethoscope"></i> Diagnosis
                             </h:outputLink>
                         </div>
                     </ui:fragment>

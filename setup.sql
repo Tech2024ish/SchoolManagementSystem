@@ -102,13 +102,47 @@ CREATE TABLE IF NOT EXISTS Reports (
   FOREIGN KEY (GeneratedBy) REFERENCES Users(UserID)
 );
 
+CREATE TABLE IF NOT EXISTS Nurses (
+  NurseId INT AUTO_INCREMENT PRIMARY KEY,
+  FirstName VARCHAR(50),
+  LastName VARCHAR(50),
+  Telephone VARCHAR(20),
+  Email VARCHAR(100),
+  Address VARCHAR(255),
+  HealthCenter VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS Doctors (
+  DoctorId INT AUTO_INCREMENT PRIMARY KEY,
+  FirstName VARCHAR(50),
+  LastName VARCHAR(50),
+  Telephone VARCHAR(20),
+  Email VARCHAR(100),
+  Address VARCHAR(255),
+  HospitalName VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS Diagnosis (
+  DiagnosisID INT AUTO_INCREMENT PRIMARY KEY,
+  PatientID INT,
+  NurseID INT,
+  DoctorID INT,
+  DiagnosisStatus ENUM('Pending','InProgress','Completed'),
+  Result TEXT,
+  Date DATE,
+  FOREIGN KEY (PatientID) REFERENCES Students(StudentID) ON DELETE SET NULL,
+  FOREIGN KEY (NurseID)   REFERENCES Nurses(NurseId)     ON DELETE SET NULL,
+  FOREIGN KEY (DoctorID)  REFERENCES Doctors(DoctorId)   ON DELETE SET NULL
+);
+
+-- bcrypt hash below is for the literal string "password" (jbcrypt 0.4)
 INSERT IGNORE INTO Users VALUES
-(1,'admin','$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy','Admin',NULL),
-(2,'teacher1','$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy','Teacher',NULL),
-(3,'teacher2','$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy','Teacher',NULL),
-(4,'student1','$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy','Student',NULL),
-(5,'student2','$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy','Student',NULL),
-(6,'parent1','$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy','Parent',NULL);
+(1,'admin','$2a$10$UMn3n6ENh9NVKqp7JaWqq.4FqCI9GRNStLaTY/c0JjC5N/LnCVKzy','Admin',NULL),
+(2,'teacher1','$2a$10$UMn3n6ENh9NVKqp7JaWqq.4FqCI9GRNStLaTY/c0JjC5N/LnCVKzy','Teacher',NULL),
+(3,'teacher2','$2a$10$UMn3n6ENh9NVKqp7JaWqq.4FqCI9GRNStLaTY/c0JjC5N/LnCVKzy','Teacher',NULL),
+(4,'student1','$2a$10$UMn3n6ENh9NVKqp7JaWqq.4FqCI9GRNStLaTY/c0JjC5N/LnCVKzy','Student',NULL),
+(5,'student2','$2a$10$UMn3n6ENh9NVKqp7JaWqq.4FqCI9GRNStLaTY/c0JjC5N/LnCVKzy','Student',NULL),
+(6,'parent1','$2a$10$UMn3n6ENh9NVKqp7JaWqq.4FqCI9GRNStLaTY/c0JjC5N/LnCVKzy','Parent',NULL);
 
 INSERT IGNORE INTO Courses VALUES
 (1,'Mathematics','Core mathematics course',2),
@@ -146,3 +180,15 @@ INSERT IGNORE INTO StudentTracking VALUES
 (1,1,'Wellbeing','On track','In school','2025-01-15'),
 (2,2,'Wellbeing','On track','In school','2025-01-15'),
 (3,3,'Sick','Not good','At home','2025-01-15');
+
+INSERT IGNORE INTO Nurses VALUES
+(1,'Anna','White','0780000030','anna.white@sms.com','Kigali','SMS Health Center'),
+(2,'Beth','Green','0780000031','beth.green@sms.com','Kigali','SMS Health Center');
+
+INSERT IGNORE INTO Doctors VALUES
+(1,'David','Black','0780000040','david.black@hospital.com','Kigali','King Faisal Hospital'),
+(2,'Emily','Stone','0780000041','emily.stone@hospital.com','Kigali','CHUK');
+
+INSERT IGNORE INTO Diagnosis VALUES
+(1,3,1,1,'Completed','Mild flu, prescribed rest and fluids','2025-01-15'),
+(2,2,2,2,'Pending','Initial consultation pending','2025-01-20');
