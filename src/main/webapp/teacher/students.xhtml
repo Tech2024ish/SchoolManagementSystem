@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-user-graduate"></i> Students</h2>
+        </div>
+        <div class="content-card">
+            <p:dataTable value="#{teacherBean.students}" var="s"
+                         emptyMessage="No students." styleClass="sms-table"
+                         paginator="true" rows="10"
+                         filterDisplay="row">
+                <p:column headerText="Reg Number" filterBy="#{s.regNumber}" filterMatchMode="contains">
+                    <h:outputText value="#{s.regNumber}"/>
+                </p:column>
+                <p:column headerText="Full Name" filterBy="#{s.firstName}" filterMatchMode="contains">
+                    <h:outputText value="#{s.firstName} #{s.lastName}"/>
+                </p:column>
+                <p:column headerText="Email">
+                    <h:outputText value="#{s.email}"/>
+                </p:column>
+                <p:column headerText="Telephone">
+                    <h:outputText value="#{s.telephone}"/>
+                </p:column>
+                <p:column headerText="Address">
+                    <h:outputText value="#{s.address}"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

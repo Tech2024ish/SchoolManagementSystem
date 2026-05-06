@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-tachometer-alt"></i> Teacher Dashboard</h2>
+        </div>
+        <div style="margin-bottom:20px;">
+            <p class="welcome-text">Welcome back, <strong>#{loginBean.currentUser.username}</strong>!</p>
+        </div>
+        <div class="stat-cards">
+            <div class="stat-card stat-blue">
+                <div class="stat-icon"><i class="fas fa-book"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number">#{teacherBean.courses.size()}</div>
+                    <div class="stat-label">My Courses</div>
+                </div>
+            </div>
+            <div class="stat-card stat-green">
+                <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number">#{teacherBean.students.size()}</div>
+                    <div class="stat-label">Students</div>
+                </div>
+            </div>
+            <div class="stat-card stat-orange">
+                <div class="stat-icon"><i class="fas fa-bullhorn"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number">#{teacherBean.announcements.size()}</div>
+                    <div class="stat-label">Announcements</div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

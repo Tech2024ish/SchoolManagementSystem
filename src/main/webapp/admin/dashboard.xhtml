@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+        </div>
+
+        <div class="stat-cards">
+            <div class="stat-card stat-blue">
+                <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number">#{adminBean.totalStudents}</div>
+                    <div class="stat-label">Total Students</div>
+                </div>
+            </div>
+            <div class="stat-card stat-green">
+                <div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number">#{adminBean.totalTeachers}</div>
+                    <div class="stat-label">Total Teachers</div>
+                </div>
+            </div>
+            <div class="stat-card stat-orange">
+                <div class="stat-icon"><i class="fas fa-book"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number">#{adminBean.totalCourses}</div>
+                    <div class="stat-label">Total Courses</div>
+                </div>
+            </div>
+            <div class="stat-card stat-purple">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number">#{adminBean.totalUsers}</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" style="margin-top:30px;">
+            <div class="card-header">
+                <h3><i class="fas fa-bullhorn"></i> Recent Announcements</h3>
+            </div>
+            <p:dataTable value="#{announcementBean.announcements}" var="ann"
+                         emptyMessage="No announcements yet."
+                         styleClass="sms-table" paginator="true" rows="5">
+                <p:column headerText="Date" style="width:120px">
+                    <h:outputText value="#{ann.date}"/>
+                </p:column>
+                <p:column headerText="Target">
+                    <h:outputText value="#{ann.targetGroup}"/>
+                </p:column>
+                <p:column headerText="Message">
+                    <h:outputText value="#{ann.message}"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

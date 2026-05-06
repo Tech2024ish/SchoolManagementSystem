@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-map-marker-alt"></i> Student Tracking</h2>
+        </div>
+        <p:growl id="msgs" life="4000"/>
+        <h:form id="trackForm">
+            <div class="content-card" style="margin-bottom:20px;">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Select Student</label>
+                        <p:selectOneMenu value="#{teacherBean.selectedStudentId}">
+                            <f:selectItem itemLabel="-- Select Student --" itemValue="0"/>
+                            <f:selectItems value="#{teacherBean.students}" var="s"
+                                           itemLabel="#{s.firstName} #{s.lastName}" itemValue="#{s.studentId}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="form-field">
+                        <label>Status</label>
+                        <p:selectOneMenu value="#{teacherBean.selectedTracking.status}">
+                            <f:selectItem itemLabel="-- Select --" itemValue="#{null}"/>
+                            <f:selectItem itemLabel="Wellbeing" itemValue="Wellbeing"/>
+                            <f:selectItem itemLabel="Sick" itemValue="Sick"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="form-field">
+                        <label>Progress</label>
+                        <p:selectOneMenu value="#{teacherBean.selectedTracking.progress}">
+                            <f:selectItem itemLabel="-- Select --" itemValue="#{null}"/>
+                            <f:selectItem itemLabel="On track" itemValue="On track"/>
+                            <f:selectItem itemLabel="Not good" itemValue="Not good"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="form-field">
+                        <label>Location</label>
+                        <p:selectOneMenu value="#{teacherBean.selectedTracking.location}">
+                            <f:selectItem itemLabel="-- Select --" itemValue="#{null}"/>
+                            <f:selectItem itemLabel="In school" itemValue="In school"/>
+                            <f:selectItem itemLabel="Outside" itemValue="Outside"/>
+                            <f:selectItem itemLabel="At home" itemValue="At home"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="form-field">
+                        <label>Date</label>
+                        <p:datePicker value="#{teacherBean.selectedTracking.date}" pattern="yyyy-MM-dd"/>
+                    </div>
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <p:commandButton value="Save Tracking" icon="pi pi-save" styleClass="btn-primary"
+                                     action="#{teacherBean.saveTracking}"
+                                     update="trackTable msgs" process="trackForm"/>
+                    <p:commandButton value="Load History" icon="pi pi-refresh"
+                                     action="#{teacherBean.loadTrackingByStudent}"
+                                     update="trackTable" process="trackForm"/>
+                </div>
+            </div>
+            <div class="content-card">
+                <p:dataTable id="trackTable" value="#{teacherBean.trackingList}" var="t"
+                             emptyMessage="No tracking records." styleClass="sms-table">
+                    <p:column headerText="Student">
+                        <h:outputText value="#{t.student.firstName} #{t.student.lastName}"/>
+                    </p:column>
+                    <p:column headerText="Status">
+                        <h:outputText value="#{t.status}"/>
+                    </p:column>
+                    <p:column headerText="Progress">
+                        <h:outputText value="#{t.progress}"/>
+                    </p:column>
+                    <p:column headerText="Location">
+                        <h:outputText value="#{t.location}"/>
+                    </p:column>
+                    <p:column headerText="Date">
+                        <h:outputText value="#{t.date}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

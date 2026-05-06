@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-tachometer-alt"></i> Parent Dashboard</h2>
+        </div>
+        <div class="welcome-banner">
+            <h3>Welcome, <strong>#{loginBean.currentUser.username}</strong>!</h3>
+            <p:panelGrid columns="2" rendered="#{parentBean.myChild != null}">
+                <h:outputText value="Child: "/>
+                <h:outputText value="#{parentBean.myChild.firstName} #{parentBean.myChild.lastName}" style="font-weight:bold"/>
+                <h:outputText value="Reg Number: "/>
+                <h:outputText value="#{parentBean.myChild.regNumber}" style="font-weight:bold"/>
+            </p:panelGrid>
+        </div>
+        <div class="stat-cards" style="margin-top:20px;">
+            <div class="stat-card stat-blue">
+                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number">#{parentBean.childMarks != null ? parentBean.childMarks.size() : 0}</div>
+                    <div class="stat-label">Marks Records</div>
+                </div>
+            </div>
+            <div class="stat-card stat-green">
+                <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number">#{parentBean.childBehavior != null ? parentBean.childBehavior.size() : 0}</div>
+                    <div class="stat-label">Behavior Records</div>
+                </div>
+            </div>
+            <div class="stat-card stat-orange">
+                <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="stat-info">
+                    <div class="stat-number">#{parentBean.childTracking != null ? parentBean.childTracking.size() : 0}</div>
+                    <div class="stat-label">Tracking Records</div>
+                </div>
+            </div>
+        </div>
+        <div class="content-card" style="margin-top:30px;" rendered="#{parentBean.childTracking != null and not empty parentBean.childTracking}">
+            <div class="card-header"><h3>Current Status</h3></div>
+            <p:panelGrid columns="2" style="width:100%">
+                <h:outputText value="Status:"/>
+                <h:outputText value="#{parentBean.childTracking[0].status}" style="font-weight:bold"/>
+                <h:outputText value="Progress:"/>
+                <h:outputText value="#{parentBean.childTracking[0].progress}" style="font-weight:bold"/>
+                <h:outputText value="Location:"/>
+                <h:outputText value="#{parentBean.childTracking[0].location}" style="font-weight:bold"/>
+            </p:panelGrid>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

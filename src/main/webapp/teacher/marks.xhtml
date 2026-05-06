@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-star"></i> Student Marks</h2>
+        </div>
+        <p:growl id="msgs" life="4000"/>
+        <h:form id="marksForm">
+            <div class="content-card" style="margin-bottom:20px;">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Select Course</label>
+                        <p:selectOneMenu value="#{teacherBean.selectedCourseId}">
+                            <f:selectItem itemLabel="-- Select Course --" itemValue="0"/>
+                            <f:selectItems value="#{teacherBean.courses}" var="c"
+                                           itemLabel="#{c.courseName}" itemValue="#{c.courseId}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="form-field">
+                        <label>Select Student</label>
+                        <p:selectOneMenu value="#{teacherBean.selectedStudentId}">
+                            <f:selectItem itemLabel="-- Select Student --" itemValue="0"/>
+                            <f:selectItems value="#{teacherBean.students}" var="s"
+                                           itemLabel="#{s.firstName} #{s.lastName}" itemValue="#{s.studentId}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="form-field">
+                        <label>Marks (0-100)</label>
+                        <p:inputText value="#{teacherBean.marksValue}" type="number"/>
+                    </div>
+                </div>
+                <p:commandButton value="Save Marks" icon="pi pi-save" styleClass="btn-primary"
+                                 action="#{teacherBean.saveMarks}"
+                                 update="marksTable msgs" process="marksForm"/>
+            </div>
+            <div class="content-card">
+                <p:commandButton value="Load Marks for Course" icon="pi pi-refresh"
+                                 action="#{teacherBean.loadMarksByCourse}"
+                                 update="marksTable" process="marksForm"
+                                 styleClass="btn-secondary" style="margin-bottom:15px;"/>
+                <p:dataTable id="marksTable" value="#{teacherBean.marksList}" var="m"
+                             emptyMessage="No marks. Select a course and click Load."
+                             styleClass="sms-table">
+                    <p:column headerText="Student">
+                        <h:outputText value="#{m.student.firstName} #{m.student.lastName}"/>
+                    </p:column>
+                    <p:column headerText="Course">
+                        <h:outputText value="#{m.course.courseName}"/>
+                    </p:column>
+                    <p:column headerText="Marks">
+                        <h:outputText value="#{m.marks}"/>
+                    </p:column>
+                    <p:column headerText="Grade">
+                        <h:outputText value="#{m.grade}"
+                                      style="font-weight:bold;color:#{m.grade == 'A' ? '#27ae60' : m.grade == 'F' ? '#e74c3c' : '#2980b9'}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-clipboard-list"></i> Child's Behavior</h2>
+        </div>
+        <div class="content-card">
+            <p:dataTable value="#{parentBean.childBehavior}" var="b"
+                         emptyMessage="No behavior records." styleClass="sms-table" paginator="true" rows="10">
+                <p:column headerText="Date"><h:outputText value="#{b.date}"/></p:column>
+                <p:column headerText="Behavior"><h:outputText value="#{b.behavior}"/></p:column>
+                <p:column headerText="Description"><h:outputText value="#{b.description}"/></p:column>
+            </p:dataTable>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

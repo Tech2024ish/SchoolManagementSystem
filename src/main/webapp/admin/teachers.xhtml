@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-chalkboard-teacher"></i> Manage Teachers</h2>
+            <p:commandButton value="Add Teacher" icon="pi pi-plus"
+                             styleClass="btn-primary"
+                             onclick="PF('teacherDlg').show()"
+                             action="#{adminBean.prepareNew}"
+                             update="teacherForm" process="@this"/>
+        </div>
+
+        <p:growl id="msgs" life="4000"/>
+
+        <div class="content-card">
+            <p:dataTable id="teacherTable" value="#{adminBean.teachers}" var="t"
+                         emptyMessage="No teachers found." styleClass="sms-table"
+                         paginator="true" rows="10">
+                <p:column headerText="Full Name">
+                    <h:outputText value="#{t.firstName} #{t.lastName}"/>
+                </p:column>
+                <p:column headerText="Course">
+                    <h:outputText value="#{t.course.courseName}" rendered="#{t.course != null}"/>
+                </p:column>
+                <p:column headerText="Email">
+                    <h:outputText value="#{t.email}"/>
+                </p:column>
+                <p:column headerText="Telephone">
+                    <h:outputText value="#{t.telephone}"/>
+                </p:column>
+                <p:column headerText="Qualification">
+                    <h:outputText value="#{t.qualification}"/>
+                </p:column>
+                <p:column headerText="Experience">
+                    <h:outputText value="#{t.experience}"/>
+                </p:column>
+                <p:column headerText="Actions" style="width:120px">
+                    <p:commandButton icon="pi pi-pencil" styleClass="btn-edit"
+                                     action="#{adminBean.editTeacher(t)}"
+                                     onclick="PF('teacherDlg').show()"
+                                     update="teacherForm" process="@this"
+                                     title="Edit"/>
+                    <p:commandButton icon="pi pi-trash" styleClass="btn-danger"
+                                     action="#{adminBean.deleteTeacher(t.teacherId)}"
+                                     update="teacherTable msgs" process="@this"
+                                     title="Delete">
+                        <p:confirm header="Confirm Delete"
+                                   message="Delete this teacher?"
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </div>
+
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Yes" type="button"
+                             styleClass="ui-confirmdialog-yes btn-danger"/>
+            <p:commandButton value="No" type="button"
+                             styleClass="ui-confirmdialog-no"/>
+        </p:confirmDialog>
+
+        <p:dialog header="Teacher Details" widgetVar="teacherDlg"
+                  modal="true" width="600" closeOnEscape="true">
+            <h:form id="teacherForm">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>First Name</label>
+                        <p:inputText value="#{adminBean.selectedTeacher.firstName}" required="true"/>
+                    </div>
+                    <div class="form-field">
+                        <label>Last Name</label>
+                        <p:inputText value="#{adminBean.selectedTeacher.lastName}" required="true"/>
+                    </div>
+                    <div class="form-field">
+                        <label>Email</label>
+                        <p:inputText value="#{adminBean.selectedTeacher.email}"/>
+                    </div>
+                    <div class="form-field">
+                        <label>Telephone</label>
+                        <p:inputText value="#{adminBean.selectedTeacher.telephone}"/>
+                    </div>
+                    <div class="form-field">
+                        <label>Qualification</label>
+                        <p:inputText value="#{adminBean.selectedTeacher.qualification}"/>
+                    </div>
+                    <div class="form-field">
+                        <label>Experience</label>
+                        <p:inputText value="#{adminBean.selectedTeacher.experience}"/>
+                    </div>
+                    <div class="form-field">
+                        <label>Course</label>
+                        <p:selectOneMenu value="#{adminBean.selectedCourseId}">
+                            <f:selectItem itemLabel="-- Select Course --" itemValue="0"/>
+                            <f:selectItems value="#{adminBean.courses}" var="c"
+                                           itemLabel="#{c.courseName}" itemValue="#{c.courseId}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="form-field" rendered="#{adminBean.selectedTeacher.teacherId == 0}">
+                        <label>Username (for login)</label>
+                        <p:inputText value="#{adminBean.newUsername}"/>
+                    </div>
+                    <div class="form-field" rendered="#{adminBean.selectedTeacher.teacherId == 0}">
+                        <label>Password (default: admin123)</label>
+                        <p:password value="#{adminBean.newPassword}" feedback="false"/>
+                    </div>
+                </div>
+                <div class="dialog-footer">
+                    <p:commandButton value="Save" icon="pi pi-check" styleClass="btn-primary"
+                                     action="#{adminBean.saveTeacher}"
+                                     update="teacherTable msgs" process="teacherForm"
+                                     oncomplete="if(!args.validationFailed) PF('teacherDlg').hide()"/>
+                    <p:commandButton value="Cancel" icon="pi pi-times"
+                                     onclick="PF('teacherDlg').hide()" type="button"/>
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+</html>

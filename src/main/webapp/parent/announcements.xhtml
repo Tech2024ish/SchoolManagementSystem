@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-bullhorn"></i> Announcements</h2>
+        </div>
+        <div class="content-card">
+            <p:dataTable value="#{parentBean.announcements}" var="ann"
+                         emptyMessage="No announcements." styleClass="sms-table" paginator="true" rows="10">
+                <p:column headerText="Date"><h:outputText value="#{ann.date}"/></p:column>
+                <p:column headerText="Target"><h:outputText value="#{ann.targetGroup}"/></p:column>
+                <p:column headerText="Message"><h:outputText value="#{ann.message}"/></p:column>
+            </p:dataTable>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>School Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <h:outputStylesheet library="css" name="style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+</h:head>
+<h:body>
+    <div class="layout-wrapper">
+        <!-- Header -->
+        <div class="layout-header">
+            <div class="header-left">
+                <span class="header-logo">&#127891; SMS</span>
+            </div>
+            <div class="header-right">
+                <span class="header-user">
+                    <i class="fas fa-user-circle"></i>
+                    Welcome, <strong>#{loginBean.currentUser.username}</strong>
+                    (#{loginBean.currentUser.userType})
+                </span>
+                <h:form>
+                    <p:commandButton value="Logout" icon="pi pi-sign-out"
+                                     action="#{loginBean.logout}"
+                                     styleClass="btn-logout" ajax="false"/>
+                </h:form>
+            </div>
+        </div>
+
+        <div class="layout-body">
+            <!-- Sidebar -->
+            <div class="layout-sidebar">
+                <nav class="sidebar-nav">
+                    <!-- Common -->
+                    <div class="nav-section">
+                        <div class="nav-section-title">MAIN</div>
+                        <h:outputLink value="#{request.contextPath}/#{loginBean.currentUser.userType == 'Admin' ? 'admin' : loginBean.currentUser.userType == 'Teacher' ? 'teacher' : loginBean.currentUser.userType == 'Student' ? 'student' : 'parent'}/dashboard.xhtml" styleClass="nav-item">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </h:outputLink>
+                        <h:outputLink value="#{request.contextPath}/profile.xhtml" styleClass="nav-item">
+                            <i class="fas fa-user"></i> Profile
+                        </h:outputLink>
+                    </div>
+
+                    <!-- Admin Menu -->
+                    <ui:fragment rendered="#{loginBean.currentUser.userType == 'Admin'}">
+                        <div class="nav-section">
+                            <div class="nav-section-title">MANAGEMENT</div>
+                            <h:outputLink value="#{request.contextPath}/admin/teachers.xhtml" styleClass="nav-item">
+                                <i class="fas fa-chalkboard-teacher"></i> Teachers
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/admin/users.xhtml" styleClass="nav-item">
+                                <i class="fas fa-users"></i> Users
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/admin/announcements.xhtml" styleClass="nav-item">
+                                <i class="fas fa-bullhorn"></i> Announcements
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/admin/appointments.xhtml" styleClass="nav-item">
+                                <i class="fas fa-calendar-check"></i> Appointments
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/admin/reports.xhtml" styleClass="nav-item">
+                                <i class="fas fa-file-alt"></i> Reports
+                            </h:outputLink>
+                        </div>
+                    </ui:fragment>
+
+                    <!-- Teacher Menu -->
+                    <ui:fragment rendered="#{loginBean.currentUser.userType == 'Teacher'}">
+                        <div class="nav-section">
+                            <div class="nav-section-title">TEACHING</div>
+                            <h:outputLink value="#{request.contextPath}/teacher/courses.xhtml" styleClass="nav-item">
+                                <i class="fas fa-book"></i> Courses
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/teacher/students.xhtml" styleClass="nav-item">
+                                <i class="fas fa-user-graduate"></i> Students
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/teacher/marks.xhtml" styleClass="nav-item">
+                                <i class="fas fa-star"></i> Marks
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/teacher/behavior.xhtml" styleClass="nav-item">
+                                <i class="fas fa-clipboard-list"></i> Behavior
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/teacher/tracking.xhtml" styleClass="nav-item">
+                                <i class="fas fa-map-marker-alt"></i> Tracking
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/teacher/announcements.xhtml" styleClass="nav-item">
+                                <i class="fas fa-bullhorn"></i> Announcements
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/teacher/appointment.xhtml" styleClass="nav-item">
+                                <i class="fas fa-calendar-check"></i> Appointment
+                            </h:outputLink>
+                        </div>
+                    </ui:fragment>
+
+                    <!-- Student Menu -->
+                    <ui:fragment rendered="#{loginBean.currentUser.userType == 'Student'}">
+                        <div class="nav-section">
+                            <div class="nav-section-title">MY ACADEMICS</div>
+                            <h:outputLink value="#{request.contextPath}/student/mymarks.xhtml" styleClass="nav-item">
+                                <i class="fas fa-star"></i> My Marks
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/student/parentinfo.xhtml" styleClass="nav-item">
+                                <i class="fas fa-users"></i> Parent Info
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/student/announcements.xhtml" styleClass="nav-item">
+                                <i class="fas fa-bullhorn"></i> Announcements
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/student/appointment.xhtml" styleClass="nav-item">
+                                <i class="fas fa-calendar-check"></i> Appointment
+                            </h:outputLink>
+                        </div>
+                    </ui:fragment>
+
+                    <!-- Parent Menu -->
+                    <ui:fragment rendered="#{loginBean.currentUser.userType == 'Parent'}">
+                        <div class="nav-section">
+                            <div class="nav-section-title">MY CHILD</div>
+                            <h:outputLink value="#{request.contextPath}/parent/progress.xhtml" styleClass="nav-item">
+                                <i class="fas fa-chart-line"></i> Progress
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/parent/behavior.xhtml" styleClass="nav-item">
+                                <i class="fas fa-clipboard-list"></i> Behavior
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/parent/tracking.xhtml" styleClass="nav-item">
+                                <i class="fas fa-map-marker-alt"></i> Tracking
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/parent/announcements.xhtml" styleClass="nav-item">
+                                <i class="fas fa-bullhorn"></i> Announcements
+                            </h:outputLink>
+                            <h:outputLink value="#{request.contextPath}/parent/appointment.xhtml" styleClass="nav-item">
+                                <i class="fas fa-calendar-check"></i> Appointment
+                            </h:outputLink>
+                        </div>
+                    </ui:fragment>
+                </nav>
+            </div>
+
+            <!-- Main Content -->
+            <div class="layout-content">
+                <p:growl id="growl" life="4000" showDetail="true"/>
+                <ui:insert name="content">
+                    <p>Page content goes here.</p>
+                </ui:insert>
+            </div>
+        </div>
+    </div>
+</h:body>
+</html>

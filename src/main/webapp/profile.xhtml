@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-user"></i> My Profile</h2>
+        </div>
+        <p:growl id="msgs" life="4000"/>
+        <div class="content-card">
+            <div style="text-align:center;margin-bottom:20px;">
+                <h:panelGroup rendered="#{profileBean.profileUser.imageLink != null}">
+                    <img src="#{request.contextPath}#{profileBean.profileUser.imageLink}"
+                         style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #3498DB;"/>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{profileBean.profileUser.imageLink == null}">
+                    <div style="width:120px;height:120px;border-radius:50%;background:#3498DB;
+                                display:inline-flex;align-items:center;justify-content:center;
+                                font-size:48px;color:white;margin:0 auto;">
+                        &#127891;
+                    </div>
+                </h:panelGroup>
+                <h3 style="margin-top:10px;">#{profileBean.profileUser.username}</h3>
+                <span class="badge">#{profileBean.profileUser.userType}</span>
+            </div>
+            <h:form id="profileForm" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <div class="form-field" style="grid-column:1/-1">
+                        <label>Upload Profile Image</label>
+                        <p:fileUpload value="#{profileBean.uploadedFile}" mode="simple"
+                                      accept="image/*" skinSimple="true" style="width:100%"/>
+                    </div>
+                    <div class="form-field" style="grid-column:1/-1;text-align:right">
+                        <p:commandButton value="Upload Image" icon="pi pi-upload" styleClass="btn-secondary"
+                                         action="#{profileBean.uploadImage}"
+                                         update="msgs" process="profileForm" ajax="false"/>
+                    </div>
+                    <div class="form-field" style="grid-column:1/-1">
+                        <label>New Password (leave blank to keep current)</label>
+                        <p:password value="#{profileBean.newPassword}" feedback="true" style="width:100%"/>
+                    </div>
+                </div>
+                <p:commandButton value="Save Profile" icon="pi pi-save" styleClass="btn-primary"
+                                 action="#{profileBean.saveProfile}"
+                                 update="msgs" process="profileForm"/>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <div class="page-header">
+            <h2><i class="fas fa-bullhorn"></i> Announcements</h2>
+        </div>
+        <p:growl id="msgs" life="4000"/>
+        <div class="content-card" style="margin-bottom:20px;">
+            <div class="card-header"><h3>Post Announcement</h3></div>
+            <h:form id="annForm">
+                <div class="form-grid">
+                    <div class="form-field" style="grid-column:1/-1">
+                        <label>Message</label>
+                        <p:inputTextarea value="#{announcementBean.newAnnouncement.message}"
+                                         rows="3" style="width:100%" required="true"/>
+                    </div>
+                    <div class="form-field">
+                        <label>Date</label>
+                        <p:datePicker value="#{announcementBean.newAnnouncement.date}"
+                                      pattern="yyyy-MM-dd"/>
+                    </div>
+                    <div class="form-field">
+                        <label>Target Group</label>
+                        <p:selectOneMenu value="#{announcementBean.newAnnouncement.targetGroup}" required="true">
+                            <f:selectItem itemLabel="-- Select --" itemValue="#{null}"/>
+                            <f:selectItem itemLabel="All" itemValue="All"/>
+                            <f:selectItem itemLabel="Students" itemValue="Students"/>
+                            <f:selectItem itemLabel="Teachers" itemValue="Teachers"/>
+                            <f:selectItem itemLabel="Parents" itemValue="Parents"/>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+                <p:commandButton value="Post" icon="pi pi-send" styleClass="btn-primary"
+                                 action="#{announcementBean.saveAnnouncement}"
+                                 update="annTable msgs" process="annForm"/>
+            </h:form>
+        </div>
+        <div class="content-card">
+            <p:dataTable id="annTable" value="#{announcementBean.announcements}" var="ann"
+                         emptyMessage="No announcements." styleClass="sms-table"
+                         paginator="true" rows="10">
+                <p:column headerText="Date" style="width:120px">
+                    <h:outputText value="#{ann.date}"/>
+                </p:column>
+                <p:column headerText="Target">
+                    <h:outputText value="#{ann.targetGroup}"/>
+                </p:column>
+                <p:column headerText="Message">
+                    <h:outputText value="#{ann.message}"/>
+                </p:column>
+                <p:column headerText="Actions" style="width:80px">
+                    <p:commandButton icon="pi pi-trash" styleClass="btn-danger"
+                                     action="#{announcementBean.deleteAnnouncement(ann.announcementId)}"
+                                     update="annTable msgs" process="@this">
+                        <p:confirm header="Delete?" message="Delete this announcement?"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </div>
+        <p:confirmDialog global="true" showEffect="fade">
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes btn-danger"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"/>
+        </p:confirmDialog>
+    </ui:define>
+</ui:composition>
+</html>
