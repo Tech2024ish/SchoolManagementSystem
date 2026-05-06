@@ -1,5 +1,6 @@
 package com.sms.controller;
 
+import com.sms.dao.UserDAO;
 import com.sms.model.*;
 import com.sms.service.*;
 
@@ -26,6 +27,7 @@ public class TeacherBean implements Serializable {
     @Inject private AppointmentService appointmentService;
     @Inject private AnnouncementService announcementService;
     @Inject private AuthService authService;
+    @Inject private UserDAO userDAO;
 
     private List<Course> courses;
     private List<Student> students;
@@ -35,7 +37,7 @@ public class TeacherBean implements Serializable {
     private List<Announcement> announcements;
 
     private Course selectedCourse = new Course();
-    private Student selectedStudent;
+    private Student selectedStudent = new Student();
     private Marks selectedMarks = new Marks();
     private StudentBehavior selectedBehavior = new StudentBehavior();
     private StudentTracking selectedTracking = new StudentTracking();
@@ -45,6 +47,9 @@ public class TeacherBean implements Serializable {
     private int selectedStudentId;
     private int selectedCourseId;
     private double marksValue;
+
+    private String newStudentUsername;
+    private String newStudentPassword;
 
     @PostConstruct
     public void loadAll() {
@@ -72,6 +77,56 @@ public class TeacherBean implements Serializable {
     }
 
     public void editCourse(Course c) { selectedCourse = c; }
+
+    public void prepareNewStudent() {
+        selectedStudent = new Student();
+        newStudentUsername = "";
+        newStudentPassword = "";
+    }
+
+    public void editStudent(Student s) {
+        selectedStudent = s;
+        newStudentUsername = "";
+        newStudentPassword = "";
+    }
+
+    public void saveStudent() {
+        try {
+            if (selectedStudent.getStudentId() == 0) {
+                String uname = newStudentUsername == null ? "" : newStudentUsername.trim();
+                String pwd   = newStudentPassword == null ? "" : newStudentPassword.trim();
+                if (uname.isEmpty() || pwd.isEmpty()) {
+                    addMessage("Username and password are required for a new student.",
+                        FacesMessage.SEVERITY_ERROR);
+                    return;
+                }
+                studentService.save(selectedStudent);
+                User u = new User();
+                u.setUsername(uname);
+                u.setPassword(authService.hashPassword(pwd));
+                u.setUserType(User.UserType.Student);
+                userDAO.save(u);
+                addMessage("Student added. Login -> username: " + uname + ", password: " + pwd,
+                    FacesMessage.SEVERITY_INFO);
+            } else {
+                studentService.update(selectedStudent);
+                addMessage("Student updated.", FacesMessage.SEVERITY_INFO);
+            }
+            students = studentService.getAllStudents();
+        } catch (Exception e) {
+            addMessage("Error: " + e.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
+
+    public void deleteStudent(int id) {
+        try {
+            studentService.delete(id);
+            addMessage("Student deleted.", FacesMessage.SEVERITY_INFO);
+            students = studentService.getAllStudents();
+        } catch (Exception e) {
+            addMessage("Error: " + e.getMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+    }
 
     public void deleteCourse(int id) {
         try {
@@ -181,6 +236,12 @@ public class TeacherBean implements Serializable {
     public List<Announcement> getAnnouncements() { return announcements; }
     public Course getSelectedCourse() { return selectedCourse; }
     public void setSelectedCourse(Course c) { this.selectedCourse = c; }
+    public Student getSelectedStudent() { return selectedStudent; }
+    public void setSelectedStudent(Student s) { this.selectedStudent = s; }
+    public String getNewStudentUsername() { return newStudentUsername; }
+    public void setNewStudentUsername(String v) { this.newStudentUsername = v; }
+    public String getNewStudentPassword() { return newStudentPassword; }
+    public void setNewStudentPassword(String v) { this.newStudentPassword = v; }
     public StudentBehavior getSelectedBehavior() { return selectedBehavior; }
     public void setSelectedBehavior(StudentBehavior b) { this.selectedBehavior = b; }
     public StudentTracking getSelectedTracking() { return selectedTracking; }

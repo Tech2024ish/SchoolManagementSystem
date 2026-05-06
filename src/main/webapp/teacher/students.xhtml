@@ -8,9 +8,16 @@
     <ui:define name="content">
         <div class="page-header">
             <h2><i class="fas fa-user-graduate"></i> Students</h2>
+            <p:commandButton value="Add Student" icon="pi pi-plus" styleClass="btn-primary"
+                             onclick="PF('studentDlg').show()"
+                             action="#{teacherBean.prepareNewStudent}"
+                             update="studentForm" process="@this"/>
         </div>
+
+        <p:growl id="msgs" life="5000"/>
+
         <div class="content-card">
-            <p:dataTable value="#{teacherBean.students}" var="s"
+            <p:dataTable id="studentTable" value="#{teacherBean.students}" var="s"
                          emptyMessage="No students." styleClass="sms-table"
                          paginator="true" rows="10"
                          filterDisplay="row">
@@ -29,8 +36,75 @@
                 <p:column headerText="Address">
                     <h:outputText value="#{s.address}"/>
                 </p:column>
+                <p:column headerText="Actions" style="width:130px">
+                    <p:commandButton icon="pi pi-pencil" styleClass="btn-edit"
+                                     action="#{teacherBean.editStudent(s)}"
+                                     onclick="PF('studentDlg').show()"
+                                     update="studentForm" process="@this" title="Edit"/>
+                    <p:commandButton icon="pi pi-trash" styleClass="btn-danger"
+                                     action="#{teacherBean.deleteStudent(s.studentId)}"
+                                     update="studentTable msgs" process="@this" title="Delete">
+                        <p:confirm header="Confirm Delete" message="Delete this student?"
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
             </p:dataTable>
         </div>
+
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes btn-danger"/>
+            <p:commandButton value="No"  type="button" styleClass="ui-confirmdialog-no"/>
+        </p:confirmDialog>
+
+        <p:dialog header="Student Details" widgetVar="studentDlg" modal="true" width="650" closeOnEscape="true">
+            <h:form id="studentForm">
+                <div class="form-grid">
+                    <div class="form-field"><label>First Name</label>
+                        <p:inputText value="#{teacherBean.selectedStudent.firstName}" required="true"/>
+                    </div>
+                    <div class="form-field"><label>Last Name</label>
+                        <p:inputText value="#{teacherBean.selectedStudent.lastName}" required="true"/>
+                    </div>
+                    <div class="form-field"><label>Reg Number</label>
+                        <p:inputText value="#{teacherBean.selectedStudent.regNumber}" required="true"/>
+                    </div>
+                    <div class="form-field"><label>Email</label>
+                        <p:inputText value="#{teacherBean.selectedStudent.email}"/>
+                    </div>
+                    <div class="form-field"><label>Telephone</label>
+                        <p:inputText value="#{teacherBean.selectedStudent.telephone}"/>
+                    </div>
+                    <div class="form-field" style="grid-column:1/-1"><label>Address</label>
+                        <p:inputText value="#{teacherBean.selectedStudent.address}"/>
+                    </div>
+
+                    <h:panelGroup rendered="#{teacherBean.selectedStudent.studentId == 0}" layout="block"
+                                  style="grid-column:1/-1; border-top:1px dashed #ccc; padding-top:10px;">
+                        <strong>Login Credentials</strong>
+                    </h:panelGroup>
+                    <div class="form-field">
+                        <h:panelGroup rendered="#{teacherBean.selectedStudent.studentId == 0}">
+                            <label>Username (for login)</label>
+                            <p:inputText value="#{teacherBean.newStudentUsername}"/>
+                        </h:panelGroup>
+                    </div>
+                    <div class="form-field">
+                        <h:panelGroup rendered="#{teacherBean.selectedStudent.studentId == 0}">
+                            <label>Password</label>
+                            <p:password value="#{teacherBean.newStudentPassword}" feedback="false"/>
+                        </h:panelGroup>
+                    </div>
+                </div>
+                <div class="dialog-footer">
+                    <p:commandButton value="Save" icon="pi pi-check" styleClass="btn-primary"
+                                     action="#{teacherBean.saveStudent}"
+                                     update="studentTable msgs" process="studentForm"
+                                     oncomplete="if(!args.validationFailed) PF('studentDlg').hide()"/>
+                    <p:commandButton value="Cancel" icon="pi pi-times"
+                                     onclick="PF('studentDlg').hide()" type="button"/>
+                </div>
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>
 </html>
